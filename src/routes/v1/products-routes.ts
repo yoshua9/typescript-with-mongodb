@@ -1,6 +1,5 @@
-const express = require("express");
-
-const productController = require("../../controllers/v1/products-controller");
+import express from "express";
+import productController from "../../controllers/v1/products-controller";
 
 const router = express.Router();
 
@@ -10,4 +9,4 @@ router.post("/update", productController.updateProduct);
 router.get("/get-all", productController.getProducts);
 router.get("/get-by-user/:userId", productController.getProductsByUser);
 
-module.exports = router;
+export default router;

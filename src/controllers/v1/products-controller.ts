@@ -1,7 +1,8 @@
-var Products = require('../../mongo/models/products');
+import {Request,Response} from 'express';
+import Products from '../../mongo/models/products';
 
 
-const createProduct = async(req, res) => {
+const createProduct = async(req:Request, res:Response): Promise<void> => {
     try {
         const { title, desc, price, images, userID } = req.body;
 
@@ -19,10 +20,10 @@ const createProduct = async(req, res) => {
         res.status(500).send({ status: "ERROR", data: e.message });
     }
 }
-const deleteProduct = (req, res) => {
-
+const deleteProduct = (req:Request, res:Response):void => {
+    console.log('');
 }
-const getProducts = async(req, res) => {
+const getProducts = async(req:Request, res:Response): Promise<void> => {
     try {
         const products = await Products.find({ price: { $gt: 14 } })
             .select('title desc price')
@@ -34,7 +35,7 @@ const getProducts = async(req, res) => {
     }
 }
 
-const getProductsByUser = async(req, res) => {
+const getProductsByUser = async(req:Request, res:Response): Promise<void> => {
     try {
         const products = await Products.findOne({ user: req.params.userID });
         console.log(products);
@@ -44,9 +45,9 @@ const getProductsByUser = async(req, res) => {
         res.status(500).send({ status: "ERROR", data: e.message });
     }
 }
-const updateProduct = (req, res) => {
-
+const updateProduct = (req:Request, res:Response):void => {
+    console.log('');
 }
 
 
-module.exports = { createProduct, deleteProduct, getProducts, updateProduct, getProductsByUser }
+export default { createProduct, deleteProduct, getProducts, updateProduct, getProductsByUser }

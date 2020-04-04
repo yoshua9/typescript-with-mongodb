@@ -1,8 +1,19 @@
-const mongoose = require('mongoose');
+import mongoose,{Schema,Document,model} from 'mongoose';
 mongoose.set('useCreateIndex', true)
-const { Schema } = mongoose;
 
-const usersSchema = new Schema({
+export interface IUser extends Document{
+    username:string;
+    password:string;
+    email:string;
+    data:{
+        age:number;
+        isMale:boolean;
+    }
+    role:string;
+}
+
+
+const usersSchema:Schema = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -12,6 +23,4 @@ const usersSchema = new Schema({
     role: { type: String, enum: ["admin", "seller"], default: "seller" }
 });
 
-const user = mongoose.model('User', usersSchema);
-
-module.exports = user;
+export default model<IUser>('User', usersSchema);

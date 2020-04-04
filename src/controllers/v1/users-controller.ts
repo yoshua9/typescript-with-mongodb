@@ -1,12 +1,13 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const Users = require('../../mongo/models/users');
-var Products = require('../../mongo/models/products');
+import {Request,Response} from "express";
+import bcrypt from 'bcrypt';
+import jwt  from 'jsonwebtoken';
+import Users  from '../../mongo/models/users';
+import Products from '../../mongo/models/products';
 
 
 const expiresIn = 60 * 10;
 
-const login = async(req, res) => {
+const login = async(req:Request, res:Response): Promise<void> => {
     try {
 
         const { email, password } = req.body;
@@ -20,7 +21,7 @@ const login = async(req, res) => {
                         userId: user._id,
                         role: user.role
                     },
-                    process.env.JWT_SECRET, {
+                    process.env.JWT_SECRET!, {
                         expiresIn: expiresIn
                     });
                 res.status(200).send({ status: "OK", data: { token, expiresIn: expiresIn } });
@@ -37,7 +38,7 @@ const login = async(req, res) => {
 };
 
 
-const createUser = async(req, res) => {
+const createUser = async(req:Request, res:Response): Promise<void> => {
     try {
 
         const { username, password, email, data } = req.body;
@@ -71,7 +72,7 @@ const createUser = async(req, res) => {
     }
 
 };
-const deleteUser = async(req, res) => {
+const deleteUser = async(req:Request, res:Response): Promise<void> => {
     try {
         const { userId } = req.body;
 
@@ -93,7 +94,7 @@ const deleteUser = async(req, res) => {
 
 
 }
-const getUsers = async(req, res) => {
+const getUsers = async(req:Request, res:Response): Promise<void> => {
     try {
         const users = await Users.find().select({ password: 0, __v: 0, role: 0 });
         res.send({ status: "ok", data: users });
@@ -102,7 +103,7 @@ const getUsers = async(req, res) => {
         res.status(500).send({ status: "ERROR", data: e.message });
     }
 }
-const updateUser = async(req, res) => {
+const updateUser = async(req:Request, res:Response): Promise<void> => {
     try {
         console.log('req.sessionData', req.sessionData.userId);
         const { username, email, data, password } = req.body;
@@ -128,4 +129,4 @@ const updateUser = async(req, res) => {
 }
 
 
-module.exports = { login, createUser, deleteUser, getUsers, updateUser }
+export default  { login, createUser, deleteUser, getUsers, updateUser }

@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import {Request,Response, NextFunction} from 'express';
 
-const isvalidHostname = (req, res, next) => {
+const isvalidHostname = (req:Request, res:Response, next:NextFunction):void => {
     const validHosts = ["dina.es", "localhost"];
     if (validHosts.includes(req.hostname)) {
         next();
@@ -11,11 +12,11 @@ const isvalidHostname = (req, res, next) => {
     }
 };
 
-const isAuth = (req, res, next) => {
+const isAuth = (req:Request, res:Response, next:NextFunction):void => {
     try {
         const { token } = req.headers;
         if (token) {
-            const data = jwt.verify(token, process.env.JWT_SECRET);
+            const data:any = jwt.verify(token as string, process.env.JWT_SECRET!);
             console.log("jwt data", data);
             req.sessionData = { userId: data.userId, role: data.role };
             next();
@@ -28,7 +29,7 @@ const isAuth = (req, res, next) => {
 
 };
 
-const isAdmin = (req, res, next) => {
+const isAdmin = (req:Request, res:Response, next:NextFunction):void => {
     try {
         const { role } = req.sessionData;
         console.log('isAdmin', role);
@@ -43,4 +44,4 @@ const isAdmin = (req, res, next) => {
 };
 
 
-module.exports = { isvalidHostname, isAuth, isAdmin };
+export { isvalidHostname, isAuth, isAdmin };
